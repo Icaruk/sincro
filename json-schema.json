@@ -12,7 +12,7 @@
 		"id": {
 			"description": "Id",
 			"type": "string",
-			"pattern": "^[0-9a-zfA-Z]{1,8}_[0-9a-zfA-Z]{16}$"
+			"pattern": "^[0-9a-zA-Z]{1,8}_[0-9a-zA-Z]{16}$"
 		},
 		"type": {
 			"description": "Type",
