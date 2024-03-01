@@ -1,0 +1,12 @@
+{
+	"version": 1,
+	"id": "repo1_y6pDpVxLXHHdJu",
+	"type": "source",
+	"sources": [
+		"zzz_playground/repo1/*"
+	],
+	"destinations": [
+		"afbd7b993acf43c0b917dc85f5d140bf",
+		"79a86a06ed6e49cf8f24278eb7e05b1a"
+	]
+}

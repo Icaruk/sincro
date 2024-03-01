@@ -1,0 +1,60 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://example.com/sincro.schema.json",
+	"title": "Sincro",
+	"description": "Sincro",
+	"type": "object",
+	"properties": {
+		"version": {
+			"$id": "#/properties/version",
+			"title": "Version",
+			"description": "Version",
+			"type": "integer",
+			"default": 1
+		},
+		"id": {
+			"$id": "#/properties/id",
+			"title": "Id",
+			"description": "Id",
+			"type": "string",
+			"pattern": "^repo[0-9a-fA-F]{8}$"
+		},
+		"type": {
+			"$id": "#/properties/type",
+			"title": "Type",
+			"description": "Type",
+			"type": "string",
+			"default": "source",
+			"enum": [
+				"source",
+				"destination"
+			]
+		},
+		"sources": {
+			"$id": "#/properties/sources",
+			"title": "Sources",
+			"description": "Sources",
+			"type": "array",
+			"items": {
+				"$id": "#/properties/sources/items",
+				"title": "Items",
+				"description": "Items",
+				"type": "string"
+			},
+			"default": []
+		},
+		"destinations": {
+			"$id": "#/properties/destinations",
+			"title": "Destinations",
+			"description": "Destinations",
+			"type": "array",
+			"items": {
+				"$id": "#/properties/destinations/items",
+				"title": "Items",
+				"description": "Items",
+				"type": "string"
+			},
+			"default": []
+		}
+	}
+}
