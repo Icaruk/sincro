@@ -1,4 +1,5 @@
 {
+	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72COAXC4Z44V63OURL2ZPCLUJQ",
 	"version": 1,
 	"id": "repo1_y6pDpVxLXHHdJu",
 	"type": "source",
