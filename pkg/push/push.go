@@ -1,4 +1,4 @@
-package scan
+package push
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func Start() {
+func Local() {
 	config, err := config.Read()
 	if err != nil {
 		fmt.Println("Config file 'sincro.json' not found. Please run 'sincro init'")

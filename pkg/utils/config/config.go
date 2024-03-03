@@ -8,12 +8,16 @@ import (
 	"strings"
 )
 
+type SyncItem struct {
+	Source       string   `json:"source"`
+	Destinations []string `json:"destinations"`
+}
+
 type JSONConfig struct {
-	Version   int      `json:"version"`
-	ID        string   `json:"id"`
-	Type      string   `json:"type"`
-	Childrens []string `json:"childrens"`
-	Include   []string `json:"include"`
+	Version int64      `json:"version"`
+	ID      string     `json:"id"`
+	Type    string     `json:"type"`
+	Sync    []SyncItem `json:"sync"`
 }
 
 // Return JSONConfig and err
@@ -57,11 +61,12 @@ func Init() (reason string, success bool) {
 
 	jsonString := strings.TrimSpace(fmt.Sprintf(`
 {
+	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72CEXAXMNBWCJT2KIRKZPCLZIA",
 	"version": 1,
 	"id": "%s",
 	"type": "source",
-	"childrens": [],
-	"sources": []
+	"sources": [],
+	"destinations": []
 }`,
 		id))
 

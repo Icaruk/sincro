@@ -17,5 +17,5 @@ var scanCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(scanCmd)
+	rootCmd.AddCommand(pushCmd)
 }

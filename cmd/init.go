@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"sincro/pkg/config"
+	"sincro/pkg/utils/config"
 
 	"github.com/spf13/cobra"
 )
