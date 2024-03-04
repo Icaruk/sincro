@@ -1,12 +1,31 @@
 {
   "name": "sincro",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "author": "Icaruk",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "node ./scripts/setup.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "homepage": "https://github.com/Icaruk/sincro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Icaruk/sincro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Icaruk/sincro/issues"
+  },
+  "keywords": [
+    "sincro",
+    "sync",
+    "types",
+    "share"
+  ],
+  "files": [
+    "scripts",
+    "bin/sincro",
+    ".version"
+  ],
+  "bin": {
+    "sincro": "bin/sincro"
+  }
 }
