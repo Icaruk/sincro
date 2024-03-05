@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"sincro/pkg/utils/config"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -16,9 +16,9 @@ var initCmd = &cobra.Command{
 		reason, success := config.Init()
 
 		if success {
-			fmt.Println(reason)
+			color.Green(reason)
 		} else {
-			fmt.Println(reason)
+			color.Red(reason)
 		}
 	},
 }

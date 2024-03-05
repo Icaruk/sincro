@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"sincro/pkg/id"
+	"sincro/pkg/utils/ui"
+	validation "sincro/pkg/utils/validations"
 	"strings"
 )
 
@@ -20,10 +22,12 @@ type JSONConfig struct {
 	Sync    []SyncItem `json:"sync"`
 }
 
+const CONFIG_FILENAME = "sincro.json"
+
 // Return JSONConfig and err
 func Read() (config JSONConfig, err error) {
 	// Open
-	file, err := os.Open("sincro.json")
+	file, err := os.Open(CONFIG_FILENAME)
 	if err != nil {
 		return config, err
 	}
@@ -40,24 +44,36 @@ func Read() (config JSONConfig, err error) {
 	return data, err
 }
 
+func validateProjectName(name string) error {
+	_, error := validation.ValidateProjectName(name)
+	return error
+}
+
 func Init() (reason string, success bool) {
 	// Check if file exists
-	_, err := os.Stat("sincro.json")
+	_, err := os.Stat(CONFIG_FILENAME)
+
+	var projectName string
 
 	// If it exists, exit
 	if err == nil {
 		return "File 'sincro.json' already exists", false
+	} else {
+		projectName = ui.PromptText("Insert the name of the project:", "? ", validateProjectName)
+		if projectName == "" {
+			return "Invalid project name", false
+		}
 	}
 
 	// Create json file
-	file, err := os.Create("sincro.json")
+	file, err := os.Create(CONFIG_FILENAME)
 	if err != nil {
-		return "Could not create 'sincro.json'", false
+		return fmt.Sprintf("Could not create '%s'", CONFIG_FILENAME), false
 	}
 	defer file.Close()
 
 	// Generate id
-	id := id.Generate("repo1")
+	id := id.Generate(projectName)
 
 	jsonString := strings.TrimSpace(fmt.Sprintf(`
 {
@@ -73,9 +89,9 @@ func Init() (reason string, success bool) {
 	// Write content
 	_, err = file.WriteString(jsonString)
 	if err != nil {
-		return "Could not write 'sincro.json'", false
+		return fmt.Sprintf("Could not write '%s'", CONFIG_FILENAME), false
 	}
 
-	return "File 'sincro.json' created successfully", true
+	return fmt.Sprintf("File 'sincro.json' created successfully for project %s", projectName), true
 
 }

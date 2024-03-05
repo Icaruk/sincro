@@ -9,7 +9,9 @@ import (
 	"regexp"
 	"sincro/pkg/utils/config"
 	"sincro/pkg/utils/files"
+	"sincro/pkg/utils/ui"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 )
@@ -20,6 +22,8 @@ func Local() {
 		fmt.Println("Config file 'sincro.json' not found. Please run 'sincro init'")
 		return
 	}
+
+	bar := ui.InitProgressBar(-1)
 
 	var filesSynced int32 = 0
 	var bytesSynced int64 = 0
@@ -87,6 +91,9 @@ func Local() {
 					log.Println("Error: could not copy file", destinationFilePath)
 				}
 
+				time.Sleep(time.Millisecond * 1500) //! debugging
+
+				bar.Add(1)
 				filesSynced++
 				bytesSynced += nBytes
 

@@ -1,13 +1,14 @@
 {
 	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72CEXAXMNBWCJT2KIRKZPCLZIA",
 	"version": 1,
-	"id": "repo1_y6pDpVxLXHHdJut5",
+	"id": "repo1_uigv2LGjQ0CFY9or",
 	"type": "source",
-	"sources": [
-		"zzz_playground/repo1/*"
-	],
-	"destinations": [
-		"afbd7b993acf43c0b917dc85f5d140bf",
-		"79a86a06ed6e49cf8f24278eb7e05b1a"
+	"sync": [
+		{
+			"source": "./zzz_playground/repo1/",
+			"destinations": [
+				"zzz_playground/repo2"
+			]
+		}
 	]
 }
