@@ -2,7 +2,8 @@
 
 CLI tool written in Go to sync your files between a source and multiple destinations.
 
-![]()
+![sincro circle](https://github.com/Icaruk/sincro/assets/10779469/53eb21dc-7a0e-468b-8967-a93085f0961c)
+
 
 [![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
 
