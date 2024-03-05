@@ -77,7 +77,7 @@ func Init() (reason string, success bool) {
 
 	jsonString := strings.TrimSpace(fmt.Sprintf(`
 {
-	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72CEXAXMNBWCJT2KIRKZPCLZIA",
+	"$schema": "https://github.com/Icaruk/sincro/blob/main/json-schema.json",
 	"version": 1,
 	"id": "%s",
 	"type": "source",
