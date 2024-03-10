@@ -2,8 +2,10 @@ package files
 
 import (
 	"fmt"
+	"io"
 	"math"
 	"os"
+	"path/filepath"
 )
 
 func Exists(path string) bool {
@@ -50,4 +52,50 @@ func PrettyByteSize(b int64) string {
 		bf /= 1024.0
 	}
 	return fmt.Sprintf("%d YiB", int(bf))
+}
+
+type WriteFileResult struct {
+	WrittenBytes int64
+	Error        error
+}
+
+func WriteFileToPath(file *os.File, toPath string, seekToStart bool) WriteFileResult {
+
+	result := WriteFileResult{
+		WrittenBytes: 0,
+		Error:        nil,
+	}
+
+	// Create folders until the file
+	destinationFolderPath := filepath.Dir(toPath)
+
+	err := os.MkdirAll(destinationFolderPath, 0770)
+	if err != nil {
+		fmt.Println("Error: could not create directory", filepath.Dir(destinationFolderPath))
+		return result
+	}
+
+	destinationFile, err := os.Create(toPath)
+	if err != nil {
+		fmt.Println("Error: could not create file", toPath)
+	}
+	defer destinationFile.Close()
+
+	// Write file
+	nBytes, err := io.Copy(destinationFile, file)
+
+	if seekToStart {
+		file.Seek(0, io.SeekStart)
+	}
+
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("Error: could not copy file", toPath)
+		return result
+	}
+
+	result.WrittenBytes = int64(nBytes)
+
+	return result
+
 }

@@ -81,8 +81,12 @@ func Init() (reason string, success bool) {
 	"version": 1,
 	"id": "%s",
 	"type": "source",
-	"sources": [],
-	"destinations": []
+	"sync": [
+		{
+			"source": "",
+			"destinations": []
+		}
+	]
 }`,
 		id))
 

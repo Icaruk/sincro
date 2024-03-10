@@ -2,7 +2,6 @@ package push
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,7 +13,10 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/schollz/progressbar/v3"
 )
+
+const DEBUG = false
 
 func Local() {
 	config, err := config.Read()
@@ -23,7 +25,11 @@ func Local() {
 		return
 	}
 
-	bar := ui.InitProgressBar(-1)
+	var bar *progressbar.ProgressBar
+
+	if !DEBUG {
+		bar = ui.InitProgressBar(-1)
+	}
 
 	var filesSynced int32 = 0
 	var bytesSynced int64 = 0
@@ -67,35 +73,80 @@ func Local() {
 				parts = parts[partsOffset:]
 
 				// Join parts
-				sourcePath = strings.Join(parts, "/")
+				sourcePathNew := strings.Join(parts, "/")
 
-				destinationFilePath := filepath.Join(destinationPath, sourcePath)
+				if DEBUG {
+					fmt.Printf("sourcePath is %s and sourcePathNew is %s", sourcePath, sourcePathNew)
+					fmt.Println("")
+				}
 
-				// Create folders until the file
+				destinationFilePath := filepath.Join(destinationPath, sourcePathNew)
+
+				writeFileResult := files.WriteFileToPath(sourceFile, destinationFilePath, true)
+
+				/* // Create folders until the file
 				destinationFolderPath := filepath.Dir(destinationFilePath)
 
 				err := os.MkdirAll(destinationFolderPath, 0770)
 				if err != nil {
 					log.Println("Error: could not create directory", filepath.Dir(destinationFolderPath))
+					continue
+				}
+
+				if DEBUG {
+					fmt.Println("+++ Creating file:", destinationFilePath)
 				}
 
 				destinationFile, err := os.Create(destinationFilePath)
 				if err != nil {
 					log.Println("Error: could not create file", destinationFilePath)
+					continue
 				}
 				defer destinationFile.Close()
 
-				// Write file
-				nBytes, err := io.Copy(destinationFile, sourceFile)
-				if err != nil {
-					log.Println("Error: could not copy file", destinationFilePath)
+				if DEBUG {
+					fmt.Println(">>> Writing file...")
+					fmt.Println("    from", sourceFile)
+					fmt.Println("    to", destinationFile)
+					fmt.Println("")
 				}
 
-				time.Sleep(time.Millisecond * 1500) //! debugging
+				// Write file
+				nBytes, err := io.Copy(destinationFile, sourceFile)
+				sourceFile.Seek(0, io.SeekStart)
+				if err != nil {
+					log.Println(err)
+					log.Println("Error: could not copy file", destinationFilePath)
+				} */
 
-				bar.Add(1)
+				if DEBUG {
+					fmt.Printf("    Wrote %d bytes to file %s\n", writeFileResult.WrittenBytes, destinationFilePath)
+				}
+
+				// Get content of written file
+				destinationFileContent, err := os.ReadFile(destinationFilePath)
+				if err != nil {
+					log.Println(err)
+					log.Println("Error: could not read file", destinationFilePath)
+				}
+
+				if DEBUG {
+					fmt.Printf("    Content of file is: %s\n", string(destinationFileContent))
+				}
+
+				if DEBUG {
+					time.Sleep(time.Millisecond * 500)
+				}
+
+				if !DEBUG {
+					bar.Add(1)
+				}
 				filesSynced++
-				bytesSynced += nBytes
+				bytesSynced += writeFileResult.WrittenBytes
+
+				if DEBUG {
+					fmt.Println("")
+				}
 
 			}
 

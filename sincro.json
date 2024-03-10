@@ -1,8 +1,15 @@
 {
-	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72CEXAXMNBWCJT2KIRKZPCLZIA",
+	"$schema": "https://github.com/Icaruk/sincro/blob/main/json-schema.json",
 	"version": 1,
-	"id": "asd123_u25dMInwW6aKtGHI",
+	"id": "asd_n4cRLtMatnsYBAAi",
 	"type": "source",
-	"sources": [],
-	"destinations": []
+	"sync": [
+		{
+			"source": "./playground/types",
+			"destinations": [
+				"D:/Dev/sincro/playground/types_destination1",
+				"D:/Dev/sincro/playground/types_destination2"
+			]
+		}
+	]
 }
