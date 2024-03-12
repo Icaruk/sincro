@@ -82,42 +82,8 @@ func Local() {
 
 				destinationFilePath := filepath.Join(destinationPath, sourcePathNew)
 
-				writeFileResult := files.WriteFileToPath(sourceFile, destinationFilePath, true)
-
-				/* // Create folders until the file
-				destinationFolderPath := filepath.Dir(destinationFilePath)
-
-				err := os.MkdirAll(destinationFolderPath, 0770)
-				if err != nil {
-					log.Println("Error: could not create directory", filepath.Dir(destinationFolderPath))
-					continue
-				}
-
-				if DEBUG {
-					fmt.Println("+++ Creating file:", destinationFilePath)
-				}
-
-				destinationFile, err := os.Create(destinationFilePath)
-				if err != nil {
-					log.Println("Error: could not create file", destinationFilePath)
-					continue
-				}
-				defer destinationFile.Close()
-
-				if DEBUG {
-					fmt.Println(">>> Writing file...")
-					fmt.Println("    from", sourceFile)
-					fmt.Println("    to", destinationFile)
-					fmt.Println("")
-				}
-
 				// Write file
-				nBytes, err := io.Copy(destinationFile, sourceFile)
-				sourceFile.Seek(0, io.SeekStart)
-				if err != nil {
-					log.Println(err)
-					log.Println("Error: could not copy file", destinationFilePath)
-				} */
+				writeFileResult := files.WriteFileToPath(sourceFile, destinationFilePath, true)
 
 				if DEBUG {
 					fmt.Printf("    Wrote %d bytes to file %s\n", writeFileResult.WrittenBytes, destinationFilePath)
@@ -162,6 +128,7 @@ func Local() {
 	humanReadableSize := files.PrettyByteSize(bytesSynced)
 
 	color.Green("Success!")
+	fmt.Println("  ├─ Sources:", len(config.Sync))
 	fmt.Println("  ├─ Files synced:", filesSynced)
 	fmt.Println("  └─ Total transferred:", humanReadableSize)
 
