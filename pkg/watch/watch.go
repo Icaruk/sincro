@@ -69,16 +69,16 @@ func Start() {
 		}
 		// fmt.Println("Got event:", event)
 
-		fmt.Println("Event: ", event.Event())
+		// fmt.Println("Event: ", event.Event())
 
 		if event.Event() == notify.Write {
-			fmt.Println("Path: ", event.Path())
+			// fmt.Println("Path: ", event.Path())
 
 			syncItemParent := files.GetPathSyncItemParent(event.Path(), config.Sync)
 
-			fmt.Println("Source parent: ", syncItemParent.Source)
-			fmt.Println("Filepath: ", event.Path())
-			fmt.Println("Destinations: ", syncItemParent.Destinations)
+			// fmt.Println("Source parent: ", syncItemParent.Source)
+			// fmt.Println("Filepath: ", event.Path())
+			// fmt.Println("Destinations: ", syncItemParent.Destinations)
 
 			pwd, err := os.Getwd()
 			if err != nil {
@@ -91,21 +91,20 @@ func Start() {
 				fmt.Println(err)
 				return
 			}
-			fmt.Println(sourceFilePathFromRoot)
 
-			filesSynced, bytesSynced := files.CopyFileToDestinations(
+			files.CopyFileToDestinations(
 				files.WithSourceFolder(syncItemParent.Source),
-				files.WithSourceFilePath(sourceFilePathFromRoot),
+				files.WithSourceFilePathFromRoot(sourceFilePathFromRoot),
 				files.WithDestionationFilePaths(syncItemParent.Destinations),
 			)
 
-			fmt.Printf("Files synced: %d, bytes synced: %d\n", filesSynced, bytesSynced)
+			fmt.Printf("Changes detected on %s\n", sourceFilePathFromRoot)
 
 		}
 
-		if event.Event() == notify.Remove {
-			fmt.Println("[WIP] Removed path: ", event.Path())
-		}
+		// if event.Event() == notify.Remove {
+		// 	fmt.Println("[WIP] Removed path: ", event.Path())
+		// }
 
 	}
 

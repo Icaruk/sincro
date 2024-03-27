@@ -11,7 +11,7 @@ import (
 
 type CopyFileToDestinationsOptions struct {
 	sourceFolder           string
-	sourceFilePath         string
+	sourceFilePathFromRoot string
 	sourceFilePathLeftTrim int
 	destionationFilePaths  []string
 	bar                    *progressbar.ProgressBar
@@ -25,15 +25,9 @@ func WithSourceFolder(sourceFolder string) CopyeFileToDestionationsOption {
 	}
 }
 
-func WithSourceFilePath(sourceFilePath string) CopyeFileToDestionationsOption {
+func WithSourceFilePathFromRoot(sourceFilePathFromRoot string) CopyeFileToDestionationsOption {
 	return func(opts *CopyFileToDestinationsOptions) {
-		opts.sourceFilePath = sourceFilePath
-	}
-}
-
-func WithSourceFilePathLeftTrim(sourceFilePathLeftTrim int) CopyeFileToDestionationsOption {
-	return func(opts *CopyFileToDestinationsOptions) {
-		opts.sourceFilePathLeftTrim = sourceFilePathLeftTrim
+		opts.sourceFilePathFromRoot = sourceFilePathFromRoot
 	}
 }
 
@@ -49,6 +43,22 @@ func WithProgressBar(bar *progressbar.ProgressBar) CopyeFileToDestionationsOptio
 	}
 }
 
+// CopyFileToDestinations copies a file from the source folder to the destination folder.
+
+/*
+Copies a file from the source folder to the destination folder.
+
+Usage:
+
+	CopyFileToDestinations(options)
+
+The options are:
+
+	WithSourceFolder("path/to/my/source")
+	WithSourceFilePathFromRoot("path/to/my/source/file.go")
+	WithDestionationFilePaths(["path/to/my/destination1", "path/to/my/other/destination2"])
+	WithProgressBar(*bar)
+*/
 func CopyFileToDestinations(opts ...CopyeFileToDestionationsOption) (
 	filesSynced int32,
 	bytesSynced int64,
@@ -61,13 +71,10 @@ func CopyFileToDestinations(opts ...CopyeFileToDestionationsOption) (
 	}
 
 	options.sourceFolder = path.Clean(options.sourceFolder)
-	options.sourceFilePath = path.Clean(options.sourceFilePath)
-
-	// Split into parts
-	_, sourceFilePathLeftTrim := GetPathParts(options.sourceFolder)
+	options.sourceFilePathFromRoot = path.Clean(options.sourceFilePathFromRoot)
 
 	// Read file
-	sourceFile, err := os.OpenFile(options.sourceFilePath, os.O_RDONLY, 0644)
+	sourceFile, err := os.OpenFile(options.sourceFilePathFromRoot, os.O_RDONLY, 0644)
 
 	if err != nil {
 		fmt.Println(err)
@@ -77,15 +84,11 @@ func CopyFileToDestinations(opts ...CopyeFileToDestionationsOption) (
 	// Iterate over destination paths
 	for _, destinationPath := range options.destionationFilePaths {
 
-		relPath, err := filepath.Rel(options.sourceFolder, options.sourceFilePath)
+		sourceFilename, err := filepath.Rel(options.sourceFolder, options.sourceFilePathFromRoot)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(relPath)
-
-		// Get filename from source
-		sourceFilename := RemovePathParts(options.sourceFilePath, sourceFilePathLeftTrim)
 
 		// Join with destination path
 		destinationFilePath := filepath.Join(destinationPath, sourceFilename)
@@ -100,7 +103,7 @@ func CopyFileToDestinations(opts ...CopyeFileToDestionationsOption) (
 		filesSynced++
 		bytesSynced += writeFileResult.WrittenBytes
 
-		fmt.Printf("   Wrote file from %s to %s\n", options.sourceFilePath, destinationFilePath)
+		// fmt.Printf("   Wrote file from %s to %s\n", options.sourceFilePathFromRoot, destinationFilePath)
 
 	}
 

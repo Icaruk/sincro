@@ -47,7 +47,7 @@ func Local() {
 
 			filesSynced, bytesSynced := files.CopyFileToDestinations(
 				files.WithSourceFolder(syncItem.Source),
-				files.WithSourceFilePath(sourceFilePath),
+				files.WithSourceFilePathFromRoot(sourceFilePath),
 				files.WithDestionationFilePaths(syncItem.Destinations),
 				files.WithProgressBar(bar),
 			)
