@@ -1,7 +1,7 @@
-const os = require("os");
-const fs = require("fs");
-const path = require("path");
-const https = require("https");
+const os = require("node:os");
+const fs = require("node:fs");
+const path = require("node:path");
+const https = require("node:https");
 
 const platform = os.platform();
 
@@ -19,8 +19,8 @@ const appName = "sincro";
  * @returns {-1 | 0 | 1} 1 if versionA > versionB, -1 if versionB > versionA, or 0 if they are equal.
  */
 function compareSemver(versionA, versionB) {
-	const arr1 = versionA.split(".").map((n) => parseInt(n));
-	const arr2 = versionB.split(".").map((n) => parseInt(n));
+	const arr1 = versionA.split(".").map((n) => Number.parseInt(n));
+	const arr2 = versionB.split(".").map((n) => Number.parseInt(n));
 
 	for (let i = 0; i < arr1.length; i++) {
 		if (arr1[i] > arr2[i]) {

@@ -1,0 +1,35 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "main watch",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "main.go",
+			"args": [
+				"watch"
+			]
+		},
+		{
+			"name": "main push",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "main.go",
+			"args": [
+				"push"
+			]
+		},
+		{
+			"name": "Launch current file",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "${fileDirname}",
+			"args": [
+				""
+			]
+		}
+	]
+}

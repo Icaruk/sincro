@@ -6,6 +6,8 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 )
 
 func Exists(path string) bool {
@@ -98,4 +100,33 @@ func WriteFileToPath(file *os.File, toPath string, seekToStart bool) WriteFileRe
 
 	return result
 
+}
+
+var rgxPathSplit = regexp.MustCompile(`\\{1,2}|\/`)
+
+// Splits a path into parts.
+//
+// Examples:
+//
+//	"a\\b\\c" -> ["a", "b", "c"]
+//	"a/b/c" -> ["a", "b", "c"]
+func GetPathParts(path string) (parts []string, partsLen int) {
+	// Split into parts
+	parts = rgxPathSplit.Split(path, -1)
+
+	return parts, len(parts)
+}
+
+func RemovePathParts(path string, leftTrim int) string {
+
+	// Split path into parts
+	parts := rgxPathSplit.Split(path, -1)
+
+	// Remove "leftTrim" elements from begginning
+	parts = parts[leftTrim:]
+
+	// Join parts
+	sourcePathNew := strings.Join(parts, "/")
+
+	return sourcePathNew
 }
