@@ -24,6 +24,31 @@ sincro init
 
 
 
+# Config
+
+```json
+{
+	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json",
+	"version": 1,
+	"id": "project_m3xdD55Apsq0Uv83",
+	"type": "source",
+	"sync": [
+		{
+			"source": "./relative/path/to/source",
+			"destinations": [
+				"C:/absolute/path/to/destination/1",
+				"C:/absolute/path/to/destination/2"
+			]
+		}
+	]
+}
+```
+
+- `source` must be relative path from root.
+- `destinations` must be absolute path.
+
+
+
 # Usage
 
 ```bash
