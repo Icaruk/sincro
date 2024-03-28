@@ -1,6 +1,6 @@
 {
   "name": "sincro",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "author": "Icaruk",
   "scripts": {
     "postinstall": "node ./scripts/setup.js"
