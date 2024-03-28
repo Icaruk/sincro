@@ -8,8 +8,8 @@ import (
 
 var watchCmd = &cobra.Command{
 	Use:   "watch",
-	Short: "Watch short",
-	Long:  `Watch long`,
+	Short: "Watch for changes in any of your sources",
+	Long:  `Watch for changes in any of your sources`,
 	Run: func(cmd *cobra.Command, args []string) {
 		watch.Start()
 	},

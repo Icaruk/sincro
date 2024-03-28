@@ -5,18 +5,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sincro/pkg/utils/config"
 	"sincro/pkg/utils/files"
 	"sincro/pkg/utils/ui"
-	"strings"
-	"time"
 
 	"github.com/fatih/color"
-	"github.com/schollz/progressbar/v3"
 )
-
-const DEBUG = false
 
 func Local() {
 	config, err := config.Read()
@@ -25,32 +19,25 @@ func Local() {
 		return
 	}
 
-	var bar *progressbar.ProgressBar
+	bar := ui.InitProgressBar(-1)
 
-	if !DEBUG {
-		bar = ui.InitProgressBar(-1)
-	}
-
-	var filesSynced int32 = 0
-	var bytesSynced int64 = 0
+	var sourceFilesCount int32 = 0
+	var filesSyncedCount int32 = 0
+	var bytesSyncedCount int64 = 0
 
 	// Iterate sources
 	for _, syncItem := range config.Sync {
+
 		// Clean path
 		syncItem.Source = filepath.Clean(syncItem.Source)
 
-		// Split into parts
-		rgxPathSplit := regexp.MustCompile(`\\{1,2}|\/`)
-		parts := rgxPathSplit.Split(syncItem.Source, -1)
-		partsOffset := len(parts)
-
 		// Walk through the source folder to get all the files
-		err := filepath.Walk(syncItem.Source, func(sourcePath string, info os.FileInfo, err error) error {
+		err := filepath.Walk(syncItem.Source, func(sourceFilePath string, info os.FileInfo, err error) error {
 			if err != nil {
 				log.Println(err)
 				return err
 			}
-			if syncItem.Source == sourcePath {
+			if syncItem.Source == sourceFilePath {
 				return nil
 			}
 
@@ -58,63 +45,40 @@ func Local() {
 				return nil
 			}
 
-			sourceFile, err := os.OpenFile(sourcePath, os.O_RDONLY, 0644)
-			if err != nil {
-				fmt.Println(err)
-			}
-			defer sourceFile.Close()
+			filesSynced, bytesSynced := files.CopyFileToDestinations(
+				files.WithSourceFolder(syncItem.Source),
+				files.WithSourceFilePathFromRoot(sourceFilePath),
+				files.WithDestionationFilePaths(syncItem.Destinations),
+				files.WithProgressBar(bar),
+			)
 
-			for _, destinationPath := range syncItem.Destinations {
+			filesSyncedCount += filesSynced
+			bytesSyncedCount += bytesSynced
+			sourceFilesCount++
 
-				// Split sourcePath path into parts and remove the first partsOffset elements
-				parts = rgxPathSplit.Split(sourcePath, -1)
+			/* 			sourceFile, err := os.OpenFile(sourceFilePath, os.O_RDONLY, 0644)
+			   			if err != nil {
+			   				fmt.Println(err)
+			   			}
+			   			defer sourceFile.Close()
 
-				// Remove partsOffset elements from begginning
-				parts = parts[partsOffset:]
+			   			for _, destinationPath := range syncItem.Destinations {
 
-				// Join parts
-				sourcePathNew := strings.Join(parts, "/")
+			   				// Get filename from source
+			   				sourceFilename := files.RemovePathParts(sourceFilePath, partsLen)
 
-				if DEBUG {
-					fmt.Printf("sourcePath is %s and sourcePathNew is %s", sourcePath, sourcePathNew)
-					fmt.Println("")
-				}
+			   				// Join with destination path
+			   				destinationFilePath := filepath.Join(destinationPath, sourceFilename)
 
-				destinationFilePath := filepath.Join(destinationPath, sourcePathNew)
+			   				// Write file
+			   				writeFileResult := files.WriteFileToPath(sourceFile, destinationFilePath, true)
 
-				// Write file
-				writeFileResult := files.WriteFileToPath(sourceFile, destinationFilePath, true)
+			   				bar.Add(1)
 
-				if DEBUG {
-					fmt.Printf("    Wrote %d bytes to file %s\n", writeFileResult.WrittenBytes, destinationFilePath)
-				}
+			   				filesSynced++
+			   				bytesSynced += writeFileResult.WrittenBytes
 
-				// Get content of written file
-				destinationFileContent, err := os.ReadFile(destinationFilePath)
-				if err != nil {
-					log.Println(err)
-					log.Println("Error: could not read file", destinationFilePath)
-				}
-
-				if DEBUG {
-					fmt.Printf("    Content of file is: %s\n", string(destinationFileContent))
-				}
-
-				if DEBUG {
-					time.Sleep(time.Millisecond * 500)
-				}
-
-				if !DEBUG {
-					bar.Add(1)
-				}
-				filesSynced++
-				bytesSynced += writeFileResult.WrittenBytes
-
-				if DEBUG {
-					fmt.Println("")
-				}
-
-			}
+			   			} */
 
 			return nil
 		})
@@ -125,11 +89,13 @@ func Local() {
 
 	}
 
-	humanReadableSize := files.PrettyByteSize(bytesSynced)
+	humanReadableSize := files.PrettyByteSize(bytesSyncedCount)
 
+	fmt.Println("")
 	color.Green("Success!")
 	fmt.Println("  ├─ Sources:", len(config.Sync))
-	fmt.Println("  ├─ Files synced:", filesSynced)
+	fmt.Println("  ├─ Sources files:", sourceFilesCount)
+	fmt.Println("  ├─ Total files synced:", filesSyncedCount)
 	fmt.Println("  └─ Total transferred:", humanReadableSize)
 
 }

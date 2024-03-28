@@ -21,7 +21,7 @@ func main() {
 
 	fmt.Println("Setting version:", newVersion)
 
-	filePath := "./cmd/updater/root.go"
+	filePath := "./cmd/root/root.go"
 
 	// Open file for reading and writing
 	file, err := os.OpenFile(filePath, os.O_RDWR, 0644)

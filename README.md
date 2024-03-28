@@ -2,10 +2,12 @@
 
 CLI tool written in Go to sync your files between a source and multiple destinations.
 
-![sincro circle](https://github.com/Icaruk/sincro/assets/10779469/53eb21dc-7a0e-468b-8967-a93085f0961c)
+![sincro circle](https://i.imgur.com/NCAcwYQ.png)
 
 
 [![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
+
+
 
 # Use cases
 
@@ -13,10 +15,21 @@ CLI tool written in Go to sync your files between a source and multiple destinat
 - sync **types** from main repository to multiple destinations
 
 
-# Usage
 
-Run:
+# Getting started
 
 ```bash
-sincro
+sincro init
+```
+
+
+
+# Usage
+
+```bash
+sincro [command] [flags]
+
+sincro init
+sincro push
+sincro watch
 ```

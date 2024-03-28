@@ -6,13 +6,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const __VERSION__ string = "0.0.1"
+const __VERSION__ string = "1.0.0"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sincro",
-	Short: "Sincro is a tool to sync your files between a source and multiple destinations",
-	Long:  `Sincro is a tool to sync your files between a source and multiple destinations. Where the "source" is the source of truth and the "destinations" are the destinations you want to sync.`,
+	Short: "Sincro is a tool to sync your files between one or more sources and multiple destinations for each source",
+	Long:  `Sincro is a tool to sync your files between one or more sources and multiple destinations for each source. Where the "source" is the source of truth and the "destinations" are the destinations you want to sync.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
