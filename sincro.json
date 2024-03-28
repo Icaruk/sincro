@@ -1,5 +1,5 @@
 {
-	"$schema": "https://github.com/Icaruk/sincro/blob/main/json-schema.json",
+	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json",
 	"version": 1,
 	"id": "asd_n4cRLtMatnsYBAAi",
 	"type": "source",
