@@ -1,49 +1,57 @@
 {
-	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"$id": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json?token=GHSAT0AAAAAAB4QV72COAXC4Z44V63OURL2ZPCLUJQ",
-	"description": "sincro.json config schema",
+	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
-		"version": {
-			"description": "Version",
-			"type": "integer",
-			"default": 1
-		},
-		"id": {
-			"description": "Id",
-			"type": "string",
-			"pattern": "^[0-9a-zA-Z]{1,8}_[0-9a-zA-Z]{16}$"
-		},
-		"type": {
-			"description": "Type",
-			"type": "string",
-			"default": "source",
-			"enum": [
-				"source",
-				"destination"
+	  "version": {
+		"description": "Version",
+		"type": "integer"
+	  },
+	  "id": {
+		"description": "Id",
+		"type": "string",
+		"pattern": "^[0-9a-zA-Z]{1,8}_[0-9a-zA-Z]{16}$"
+	  },
+	  "type": {
+		"description": "Type",
+		"type": "string",
+		"enum": [
+			"source",
+			"destination"
+		]
+	  },
+	  "sync": {
+		"type": "array",
+		"items": [
+		  {
+			"type": "object",
+			"properties": {
+			  "source": {
+				"type": "string"
+			  },
+			  "destinations": {
+				"type": "array",
+				"items": [
+				  {
+					"type": "string"
+				  },
+				  {
+					"type": "string"
+				  }
+				]
+			  }
+			},
+			"required": [
+			  "source",
+			  "destinations"
 			]
-		},
-		"sources": {
-			"description": "Sources",
-			"type": "array",
-			"items": {
-				"$id": "#/properties/sources/items",
-				"title": "Items",
-				"description": "Items",
-				"type": "string"
-			},
-			"default": []
-		},
-		"destinations": {
-			"description": "Destinations",
-			"type": "array",
-			"items": {
-				"$id": "#/properties/destinations/items",
-				"title": "Items",
-				"description": "Items",
-				"type": "string"
-			},
-			"default": []
-		}
-	}
+		  }
+		]
+	  }
+	},
+	"required": [
+	  "version",
+	  "id",
+	  "type",
+	  "sync"
+	]
 }
