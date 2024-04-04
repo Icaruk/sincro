@@ -44,8 +44,8 @@ sincro init
 }
 ```
 
-- `source` must be relative path from root.
-- `destinations` must be absolute path.
+- `sync.*.source` must be relative path from root.
+- `sync.*.destinations` must be absolute path.
 
 
 
