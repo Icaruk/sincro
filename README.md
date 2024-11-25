@@ -26,6 +26,7 @@ sincro init
 
 # Config
 
+sincro.json
 ```json
 {
 	"$schema": "https://raw.githubusercontent.com/Icaruk/sincro/main/json-schema.json",
